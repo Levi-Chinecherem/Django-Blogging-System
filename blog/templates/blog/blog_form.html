@@ -1,0 +1,81 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+		
+		<title>D&C - Create Blog</title>
+
+		<!-- Loading third party fonts -->
+		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+		<link href="{% static 'blog/form_fonts/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+		<!-- Loading main css file -->
+		<link rel="stylesheet" href="{% static 'blog/blog_form.css' %}">
+		
+		<!--[if lt IE 9]>
+		<script src="js/ie-support/html5.js"></script>
+		<script src="js/ie-support/respond.js"></script>
+		<![endif]-->
+
+	</head>
+
+
+	<body>
+		
+		<div class="site-content">
+			<main class="main-content">
+
+				<div class="fullwidth-block">
+					<div class="container">
+
+						<div class="col-md-6 col-md-offset-1">
+							<h2 class="section-title">Make A Post Today!</h2>
+
+							<p>Return <a class="input btn" href="{% url 'blog' %}" placeholder="Back to Blog">Back to Blog</a>
+							if you are done with all your blog post, of if you have no post at the moment.</p>
+
+							{% for message in messages %}
+							<div class="row">
+								<p>{{ message }}</p>
+								</div>
+							{% endfor %}
+
+								<form action="" method="post" class="contact-form" enctype="multipart/form-data">
+									{% csrf_token %}
+								<div class="row">
+									<div class="col-md-6"><input type="text" required name="title" placeholder="Your name..." ></div>
+								</div>
+								<div class="row">
+									<div class="col-md-6"><textarea required name="desc1" placeholder="Description One..."></textarea></div>
+									<div class="col-md-6"><textarea required name="desc2" placeholder="Description Two..."></textarea></div>
+								</div>
+								<div class="row">
+									<div class="col-md-6"><input type="file" required name="image1" class="form-control" ></div>
+								</div>
+								<div class="row">
+									<div class="col-md-6"><textarea required name="brief" placeholder="selling Point/subtitle..."></textarea></div>
+									<div class="col-md-6"><textarea required name="desc3" placeholder="Description to selling point..."></textarea></div>
+								</div>
+								<textarea required name="summary" placeholder="Summary..."></textarea>
+								<div class="row">
+									<div class="col-md-6"><input type="file" required name="image2" class="form-control" ></div>
+								</div>
+								<div class="text-right">
+									<input type="submit" placeholder="Send message">
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+				
+			</main> <!-- .main-content -->
+		</div>
+	</body>
+
+</html>

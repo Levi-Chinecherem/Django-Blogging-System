@@ -1,0 +1,53 @@
+//forms.html
+<form class="contact-form" method="post" enctype="multipart/form-data">
+								{% csrf_token %}
+
+								<div class="row">
+									<div class="col-md-6">{% render_field form.title type="text" placeholder="Your title..." %}</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">{% render_field form.desc1 type="text" placeholder="Your first description..." %}</div>
+									<div class="col-md-6">{% render_field form.desc2 type="text" placeholder="Your second description..." %}</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">{% render_field form.image1 placeholder="Your first image..." %}</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6"> {% render_field form.brief placeholder="Your second title or selling point..." %}</div>
+									<div class="col-md-6"> {% render_field form.desc3 placeholder="Your third description..." %}</div>
+								</div>
+								<textarea {% render_field form.summary placeholder="Your second title or selling point..." %}</textarea>
+								<div class="row">
+									<div class="col-md-6">{% render_field form.image2 placeholder="Your second image..." %}</div>
+								</div>
+								<div class="text-right">
+									<input type="submit" placeholder="Post" value="Post">
+								</div>
+							</form>
+//views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import BlogForm
+
+def blog_form_view(request):
+    form=BlogForm()
+    if request.method=='POST':
+        form = BlogForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Post has been uploaded")
+    else:
+        form = BlogForm()
+        messages.error(request, "error uploadeding post")
+    return render(request, 'blog/blog_form.html', {'form':form})
+
+
+//forms.py
+from django.forms import ModelForm
+from .models import Blog
+
+class BlogForm(ModelForm):
+    class Meta:
+        model = Blog
+        fields = '__all__'
+        exclode = ['blog_slug', 'date_created']

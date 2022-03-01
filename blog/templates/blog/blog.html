@@ -1,0 +1,99 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title%}Blogs{% endblock title%}
+{% block page_title%}Blog Posts{% endblock page_title%}
+
+{% block content %}
+
+<!-- Posts List -->
+<div class="section blog-posts-wrapper">
+	<div class="container">
+		<div class="row" style="white-space: wrap;">
+
+			<!-- Blog Post -->{% for p in post %}
+			<div class="col-md-4 col-sm-6">
+				<div class="blog-post">
+					<!-- Post Info -->
+					<div class="post-info">
+						<div class="post-date">
+							<div class="date">{{ p.date_created }}</div>
+						</div>
+						<div class="post-comments-count">
+							<a href="{% url 'blog_details' p.blog_slug %}" title="Show Comments"><i class="glyphicon glyphicon-comment icon-white"></i>11</a>
+						</div>
+					</div>
+					<!-- End Post Info -->
+					<!-- Post Image -->
+					<a href="{% url 'blog_details' p.blog_slug %}"> <img style="max-height: 247px !important;" src="{{ p.image1.url }}" alt="{{ p.title }} blog image"></a>
+					<!-- End Post Image -->
+					<!-- Post Title & Summary -->
+					<div class="post-title">
+						<h3><a href="{% url 'blog_details' p.blog_slug %}"> {{ p.title }}</a></h3>
+					</div>
+					<div class="post-summary">
+						<p>{{ p.desc1 }}</p>
+					</div>
+					<!-- End Post Title & Summary -->
+					<div class="post-more"><a href="{% url 'blog_details' p.blog_slug %}" class="btn btn-small">Read more</a>
+					</div>
+				</div>
+			</div>{% endfor %}
+
+			<!-- End Blog Post -->
+
+			<!-- Post -->
+			<div class="col-md-4 col-sm-6">
+				<div class="blog-post">
+					<!-- Post Info -->
+					<div class="post-info">
+						<div class="post-date">
+							<div class="date">30 JAN, 2013</div>
+						</div>
+						<div class="post-comments-count">
+							<a href="page-blog-post-right-sidebar.html" title="Show Comments"><i class="glyphicon glyphicon-comment icon-white"></i>11</a>
+						</div>
+					</div>
+					<!-- End Post Info -->
+					<!-- Post Image -->
+					<a href="page-blog-post-right-sidebar.html"><img src="{% static 'blog/img/blog1.jpg' %}" class="post-image" alt="Post Title"></a>
+					<!-- End Post Image -->
+					<!-- Post Title & Summary -->
+					<div class="post-title">
+						<h3><a href="page-blog-post-right-sidebar.html">Post Title</a></h3>
+					</div>
+					<div class="post-summary">
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mattis, nulla id pretium malesuada, dui est laoreet risus, ac rhoncus eros diam id odio. Duis elementum ligula eu ipsum condimentum accumsan.</p>
+					</div>
+					<!-- End Post Title & Summary -->
+					<div class="post-more">
+						<a href="page-blog-post-right-sidebar.html" class="btn btn-small">Read more</a>
+					</div>
+				</div>
+			</div>
+			<!-- End Post -->
+
+			<div class="pagination">
+			{% if post.has_previous %}
+				<a href="?page=1">&laquo; First</a>
+				<a href="?page={{ post.previous_page_number }}">Previous</a>
+			{% endif %}
+
+			<span class="mx-4">
+				Page {{ post.number }} of {{ post.paginator.num_pages }} Pages
+			</span>
+
+			{% if post.has_next %}
+				<a href='?page={{ post.next_page_number }}'>Next</a>
+				<a href='?page={{ post.num_pages }}'>Last &raquo;</a>
+			{% endif %}
+
+			</div>
+
+		</div>
+	</div>
+</div>
+<!-- End Posts List -->
+
+
+{% endblock content%}
