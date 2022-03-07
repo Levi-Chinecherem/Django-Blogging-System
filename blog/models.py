@@ -5,6 +5,7 @@ from django.db.models.signals import pre_save
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     blog_slug = models.SlugField(max_length=200, unique=True, null=True)
+    blog_reply = models.CharField(max_length=500, unique=True, null=True, blank=True)
     desc1 = models.TextField(verbose_name="Description One, Short Description", max_length=210, null=True)
     desc2 = models.TextField(verbose_name="Description Two", null=True)
     image1 = models.ImageField(upload_to="images/posts/", height_field=None, width_field=None, max_length=200, null=True, blank=True)
@@ -41,4 +42,18 @@ class Comment(models.Model):
 
     class Meta:
         verbose_name_plural = "Comments"
+
+class Reply(models.Model):
+    comment = models.ForeignKey(Comment, related_name="reply", on_delete=models.CASCADE)
+    reply_name = models.CharField(verbose_name="Reply Name", max_length=50)
+    email_address = models.EmailField(verbose_name="Reply Email Address", max_length=50)
+    message = models.TextField(verbose_name="Reply Message Body", null=False)
+    date_created = models.DateField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return self.reply_name
+
+    class Meta:
+        verbose_name_plural = "Replies"
+
 

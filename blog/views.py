@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage
 from django.contrib import messages
-from blog.models import Blog, Comment
+from blog.models import Blog, Comment, Reply
 
 # Create your views here.
 def home_view(request):
@@ -49,9 +49,25 @@ def blog_details_view(request, blog_slug):
         messages.success(request, "Comment dropped successfully")
 
     all_comments = Comment.objects.all().order_by('-date_created')
+    all_replies = Reply.objects.all().order_by('-date_created')
     blog_details = Blog.objects.get(blog_slug=blog_slug)
     contest = {
         'blog': blog_details,
-        'comment': all_comments,}
+        'comment': all_comments,
+        'reply':all_replies,}
     return render(request, 'blog/blog_single.html', contest)
+
+def comment_reply_view(request):
+    if request.method == 'POST':
+        reply_instance = Comment()
+        reply = Reply()
+        reply.reply_name = request.POST.get('reply_name')
+        reply.email_address = request.POST.get('reply_email')
+        reply.message = request.POST.get('reply_message')
+        reply.reply = reply_instance
+        reply.save()
+        messages.success(request, "Reply dropped successfully")
+        return redirect('blog_details')
+
+    return render(request, 'blog/blog_reply.html')
 
